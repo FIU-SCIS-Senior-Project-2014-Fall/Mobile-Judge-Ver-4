@@ -7,45 +7,56 @@ class Livestats {
     //Get all: average grades, student id, First Name and last name
     public function getAll() {
         $db = new Database();
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
         $db->sql("select s.id, avg(j.grade) as RawGrade, k.ApprovedGrade, u.FirstName as Name, u.LastName, s.project, s.location
             FROM JudgeStudentGrade as j 
+            join Users as u1 on u1.judgeId = j.judgeId
             join Users as u on j.StudentId = u.StudentId
             join Students as s on s.id = j.StudentId
+            join term as t on t.showTerm = 'yes' and u1.termInitiated = u.termInitiated and u1.termInitiated = s.termInitiated and u1.termInitiated = t.termInitiated and u.termInitiated = s.termInitiated and u.termInitiated = t.termInitiated and s.termInitiated = t.termInitiated
             left join
             (
-                select st.id, st.Grade as ApprovedGrade
+                select st.id, ju.Grade as ApprovedGrade
                 FROM JudgeStudentGrade as ju 
+                inner join Users as u2 on u2.judgeId = ju.judgeId
                 inner join Users as us on ju.StudentId = us.StudentId
                 inner join Students as st on st.id = ju.StudentId
+                inner join term as tt on tt.showTerm = 'yes' and u2.termInitiated = us.termInitiated and u2.termInitiated = st.termInitiated and u2.termInitiated = tt.termInitiated and us.termInitiated = st.termInitiated and us.termInitiated = tt.termInitiated and st.termInitiated = tt.termInitiated
                 where ju.Accepted = 1
                 group by ju.StudentId       
             ) as k on k.id = s.id
-			join term as t on u.termInitiated = t.termInitiated
-			where t.ShowTerm = 'yes'
             group by j.StudentId");
 
         $res = $db->getResult();
-        if (array_key_exists('id', $res)) $res=array($res);
+        //if (array_key_exists('id', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);
     }
 
     public function getAllControlled() {
         $db = new Database();
-        $db->sql('select s.id, avg(j.grade) as RawGrade, k.ApprovedGrade, u.FirstName as Name, u.LastName, s.project, s.location
+        $db->sql("select s.id, avg(j.grade) as RawGrade, k.ApprovedGrade, u.FirstName as Name, u.LastName, s.project, s.location
             FROM JudgeStudentGrade as j 
+			join Users as u1 on u1.judgeId = j.judgeId
             join Users as u on j.StudentId = u.StudentId
             join Students as s on s.id = j.StudentId
+			join term as t on t.showTerm = 'yes' and u1.termInitiated = u.termInitiated and u1.termInitiated = s.termInitiated and u1.termInitiated = t.termInitiated and u.termInitiated = s.termInitiated and u.termInitiated = t.termInitiated and s.termInitiated = t.termInitiated
             left join
             (
-                select st.id, st.Grade as ApprovedGrade
+                select st.id, ju.Grade as ApprovedGrade
                 FROM JudgeStudentGrade as ju 
+				inner join Users as u2 on u2.judgeId = ju.judgeId
                 inner join Users as us on ju.StudentId = us.StudentId
                 inner join Students as st on st.id = ju.StudentId
+				inner join term as tt on tt.showTerm = 'yes' and u2.termInitiated = us.termInitiated and u2.termInitiated = st.termInitiated and u2.termInitiated = tt.termInitiated and us.termInitiated = st.termInitiated and us.termInitiated = tt.termInitiated and st.termInitiated = tt.termInitiated
                 where ju.Accepted = 1 and ju.grade is not null
                 group by ju.StudentId       
             ) as k on k.id = s.id
             where j.grade is not null
-            group by j.StudentId');
+            group by j.StudentId");
         $res = $db->getResult();
         $cou = count($res);
         console.log($cou);
@@ -67,18 +78,24 @@ class Livestats {
 
     public function getAllProjects() {
         $db = new Database();
-        $db->sql('select s.project as Name, avg(j.grade) as RawGrade, k.ApprovedGrade
+        $db->sql("select s.project as Name, avg(j.grade) as RawGrade, k.ApprovedGrade
                 FROM JudgeStudentGrade as j
-                inner join Students as s on s.id = j.StudentId
+				join Users as u1 on u1.judgeId = j.judgeId
+				join Users as u on j.StudentId = u.StudentId
+                join Students as s on s.id = j.StudentId
+				join term as t on t.showTerm = 'yes' and u1.termInitiated = u.termInitiated and u1.termInitiated = s.termInitiated and u1.termInitiated = t.termInitiated and u.termInitiated = s.termInitiated and u.termInitiated = t.termInitiated and s.termInitiated = t.termInitiated
             left join
             (
                 select st.project, avg(ju.grade) as ApprovedGrade
                 FROM JudgeStudentGrade as ju 
+                inner join Users as u2 on u2.judgeId = ju.judgeId
+                inner join Users as us on ju.StudentId = us.StudentId
                 inner join Students as st on st.id = ju.StudentId
+				inner join term as tt on tt.showTerm = 'yes' and u2.termInitiated = us.termInitiated and u2.termInitiated = st.termInitiated and u2.termInitiated = tt.termInitiated and us.termInitiated = st.termInitiated and us.termInitiated = tt.termInitiated and st.termInitiated = tt.termInitiated
                 where ju.Accepted = 1
                 group by st.project       
             ) as k on k.project = s.project
-            group by s.project');
+            group by s.project");
 
         $res = $db->getResult();
         if (array_key_exists('Name', $res)) $res=array($res);
@@ -88,12 +105,14 @@ class Livestats {
     //get all: ACCEPTED average grades, student id, First Name and last Name
     public function getAllApproved() {
         $db = new Database();
-        $db->sql('select s.id, avg(j.grade) as Grade, u.FirstName as Name, u.LastName
+        $db->sql("select s.id, avg(j.grade) as Grade, u.FirstName as Name, u.LastName
             FROM JudgeStudentGrade as j 
-            inner join Users as u on j.StudentId = u.StudentId
-            inner join Students as s on s.id = j.StudentId
-            where j.Accepted = 1
-            group by j.StudentId');
+            join Users as u1 on u1.judgeId = j.judgeId
+			join Users as u on j.StudentId = u.StudentId
+            join Students as s on s.id = j.StudentId
+			join term as t on t.showTerm = 'yes' and u1.termInitiated = u.termInitiated and u1.termInitiated = s.termInitiated and u1.termInitiated = t.termInitiated and u.termInitiated = s.termInitiated and u.termInitiated = t.termInitiated and s.termInitiated = t.termInitiated
+			where j.Accepted = 1
+            group by j.StudentId");
         $res = $db->getResult();
         if (array_key_exists('id', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);
@@ -128,12 +147,14 @@ class Livestats {
 
         public function getApprovedStudent($StudentId) {
         $db = new Database();
-        $db->sql('select s.id, avg(j.grade) as Grade, u.FirstName, u.LastName
+        $db->sql("select s.id, avg(j.grade) as Grade, u.FirstName, u.LastName
             FROM JudgeStudentGrade as j 
-            inner join Users as u on j.StudentId = u.StudentId
+            inner join Users as u1 on u1.judgeId = j.judgeId
+			inner join Users as u on j.StudentId = u.StudentId
             inner join Students as s on s.id = j.StudentId
+			inner join term as t on t.showTerm = 'yes' and u1.termInitiated = u.termInitiated and u1.termInitiated = s.termInitiated and u1.termInitiated = t.termInitiated and u.termInitiated = s.termInitiated and u.termInitiated = t.termInitiated and s.termInitiated = t.termInitiated
             where j.Accepted = 1 AND j.StudentId = '.$StudentId.'
-            group by j.StudentId');
+            group by j.StudentId");
         $res = $db->getResult();
         if (array_key_exists('id', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);

@@ -24,15 +24,11 @@ Ext.define('OnlineJudges.view.Login', {
                         xtype: 'emailfield',
                         name: 'email',
                         placeHolder: 'email@example.com'
-                        //,value: 'aparedes'
-                        //,value: 'admin'
                     },
                     {
                         xtype: 'passwordfield',
                         name: 'password',
                         placeHolder: 'password'
-                        //,value: 'password'
-                        //,value: 'admin'
                     }
                 ]
             },
@@ -53,5 +49,4 @@ Ext.define('OnlineJudges.view.Login', {
             }
         ]
     }
-
 });

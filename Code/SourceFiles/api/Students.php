@@ -11,19 +11,24 @@ class Students {
 
 	public function load(){
 		$db = new Database();
+		
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
 
-		$db->delete('Users',"StudentId is not null and termInitiated = 'Fall 2014'");
-		$db->delete('Students','1=1');
-		$db->select('Settings','SrProjectUrl,SrProjectToken', null, "term = 'Fall 2014'");
+		$db->delete('Users',"StudentId is not null and termInitiated = '".$term."'");
+		$db->delete('Students',"1=1 and termInitiated = '".$term."'");
+		$db->select('Settings','SrProjectUrl,SrProjectToken', null, "term = '".$term."'");
 		$settings = $db->getResult();
 
 		$students = json_decode(file_get_contents($settings['SrProjectUrl'].'/getAll/'.$settings['SrProjectToken']));
-
+		
 		foreach($students as $student){
 			$db->insert('Students', array(
 			'id' => $student->id,
-			'Project' => $student->projectTitle,
-			'Location' => 'TBA'
+			'Project' => addslashes($student->projectTitle),
+			'Location' => 'TBA',
+			'termInitiated' => ''.$term.''
 			));
 
 			$db->insert('Users', array(
@@ -32,7 +37,8 @@ class Students {
 			'LastName' => ucfirst($student->lastName),
 			'StudentId' => $student->id,
 			'Roles' => 'student',
-			'DefaultRole' => 'student'
+			'DefaultRole' => 'student',
+			'termInitiated' => ''.$term.''
 			));
 		}
 

@@ -39,7 +39,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             'student.Judges',
             'Invitations',
             'InvitationEmails',
-            // NEW declare store
             'AddJudgesList',
             'Livestats',
             'LivestatsGraph',
@@ -51,7 +50,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             'EmailTemplates',
             'PendingGrades'
         ],
-
         refs: {
             main: 'adminMain',
             navBtn: 'adminMain #navigBtn',
@@ -143,9 +141,7 @@ Ext.define('OnlineJudges.controller.Admin', {
                 hide: 'onEmailHide'
             },
             "invitations": {
-                //show: 'onEmailShow',
                 activeitemchange: 'onInvitationsActiveItemChange',
-                //hide: 'onEmailHide'
             },
             "email selectfield": {
                 change: 'onTemplateFieldChange'
@@ -169,7 +165,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             "email checkboxfield[name=pastJudges]": {
                 uncheck: 'onPastJudgesUnchecked',
                 check: 'onPastJudgesChecked'
-
             },
             "email checkboxfield[name=pastStudents]":{
                 uncheck: "onPastStudensUncheck",
@@ -199,7 +194,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             "judgesOptions checkboxfield[name=declinedJudges]": {
                 uncheck: 'onPendingJudgesUncheck',
                 check: 'onDeclinedJudgesCheck'
-                
             },
             "judgesOptions button[name=ok]":{
                 tap: 'onJudgesOptionOKTap'
@@ -213,7 +207,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             "emailTemplate button[name=insertPlaceHolder]":{
                 tap: 'onInsertPlaceHolderTap'
             },
-
             "adminMain livestats": {
                 show: 'onLivestatsListShow',
                 hide: 'onLivestatsHide'
@@ -235,7 +228,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             },
             "termsList button[name=OKBtn]": {
                 tap: 'onTermsOKTab'
-
             },
             "pastJudgesOptions button[name=OKBtn]": {
                 tap: 'onPastJOptionsOKTap'
@@ -266,7 +258,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             "settings #myDefaultRoleBtn": {
                 tap: 'onMyDefaultRoleBtnTap'
             }
-
         }
     },
     onPJOdeclinedCheck: function(){
@@ -288,7 +279,6 @@ Ext.define('OnlineJudges.controller.Admin', {
         }
     },
     onPJOattendedCheck:function(){
-        //alert('onPJOattendedCheck');
         var pjo = this.getPastJudgesOptions();
         var pendingtPjo = pjo.down('checkboxfield[name=pendingJudges]');
         var all = pjo.down('checkboxfield[name=invitedJudges]');
@@ -306,7 +296,6 @@ Ext.define('OnlineJudges.controller.Admin', {
         all.uncheck();
     },
     onPJOgradedCheck:function(){
-        //alert('onPJOgradedCheck');
         var pjo = this.getPastJudgesOptions();
         var pendingtPjo = pjo.down('checkboxfield[name=pendingJudges]');
         var all = pjo.down('checkboxfield[name=invitedJudges]');
@@ -381,13 +370,11 @@ Ext.define('OnlineJudges.controller.Admin', {
         invitations.next();
     },
     //Funtion used in the TermsList view
-    //==============================================================================================
     onTermsOKTab: function(btn){
         var main = this.getMain();
         var terms = this.getTerms();
         var list = terms.down('list[name=terms]');
         var chb = main.down('email checkboxfield[name=pastStudents]');
-        //var current = main.down('email checkboxfield[name=activeStudents]');
         var all = main.down('email checkboxfield[name=allStudents]');
 
         if (list.getSelectionCount() > 0) {
@@ -400,11 +387,7 @@ Ext.define('OnlineJudges.controller.Admin', {
         terms.hide();
        
     },
-    //==============================================================================================
-
-    //=============================================================================
     //Handlers for the judgesOptions view
-    //=============================================================================
     onJudgesOptionOKTap: function(){
         var jOptions = this.getJudgesOptions();
         var pendingChk = jOptions.down('checkboxfield[name=pendingJudges]');
@@ -440,10 +423,6 @@ Ext.define('OnlineJudges.controller.Admin', {
     if(activeJudges === null) return;
         str.clearFilter();
         str.load();
-        
-        //str.each(function (item) {
-        //    item.set('Send', true);
-        //});
 
         str.filterBy(function (record) {
             var terms = record.get('Term').split(',');
@@ -513,8 +492,6 @@ Ext.define('OnlineJudges.controller.Admin', {
                     }
                 }
             }
-
-            
         });
     },
     onDeclinedJudgesCheck:function(chk, e, eO){
@@ -527,7 +504,6 @@ Ext.define('OnlineJudges.controller.Admin', {
                 invitedJudges.check();
             }
         }
-        
     }, 
     onAcceptedJudgesCheck: function(chk, e, eO){
         if (Ext.isDefined(e)) {
@@ -539,7 +515,6 @@ Ext.define('OnlineJudges.controller.Admin', {
                 invitedJudges.check();
             }
         }
-        
     },
     onPendingJudgesCheck: function(chk,e,eO){
         if (Ext.isDefined(e)) {
@@ -550,9 +525,7 @@ Ext.define('OnlineJudges.controller.Admin', {
             if (acceptedJudges.getChecked() === true && declinedJudges.getChecked() === true) {
                 invitedJudges.check();
             }
-
         }
-        
     },
     onPendingJudgesUncheck: function (chk, e, eO) {
         if (Ext.isDefined(e)) {
@@ -560,7 +533,6 @@ Ext.define('OnlineJudges.controller.Admin', {
                 invitedJudges = jo.down('checkboxfield[name=invitedJudges]');
             invitedJudges.uncheck();
         }
-        
     },
     onInvitedJudgesUncheck: function(chk, e, eO){
         if (Ext.isDefined(e)) {
@@ -572,7 +544,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             acceptedJudges.uncheck();
             declinedJudges.uncheck();
         }
-       
     },
     onInvitedJudgesCheck: function (chk, e, eO) {
         if (Ext.isDefined(e)) {
@@ -584,42 +555,14 @@ Ext.define('OnlineJudges.controller.Admin', {
             acceptedJudges.check();
             declinedJudges.check();
         }
-        
     },
-    //===========================================================================================
     //Handlers for the Email view
-    //===========================================================================================
     onEmailTemplateShow: function (panel) {
         var main = this.getMain();
         var backBtn = this.getBackBtn();
         var navBtn = this.getNavBtn();
         navBtn.setText('Save');
         backBtn.hide();
-
-        //tinymce.init({
-        //    selector: "textarea.tinymce",
-        //    theme: "modern",
-        //    width: main.getWidth(),
-        //    height: 200,
-        //    plugins: [
-        //            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-        //            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-        //            "save table contextmenu directionality emoticons template paste textcolor"
-        //    ],
-        //    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
-        //    style_formats: [
-        //            { title: 'Bold text', inline: 'b' },
-        //            { title: 'Red text', inline: 'span', styles: { color: '#ff0000' } },
-        //            { title: 'Red header', block: 'h1', styles: { color: '#ff0000' } },
-        //            { title: 'Example 1', inline: 'span', classes: 'example1' },
-        //            { title: 'Example 2', inline: 'span', classes: 'example2' },
-        //            { title: 'Table styles' },
-        //            { title: 'Table row 1', selector: 'tr', classes: 'tablerow1' }
-        //    ]
-        //});
-
-
-
     },
     onAddTemplateTap: function(){
         var main = this.getMain();
@@ -650,12 +593,9 @@ Ext.define('OnlineJudges.controller.Admin', {
         var termsList = this.getTerms().down('list[name=terms]');
         var terms = termsList.getSelection().map(function (rec) { return rec.get('id') });
         if(currentStudents === null) return;
-        //str.load();
         str.clearFilter();
         str.load();
         str.filterBy(function (record) {
-            //var name = record.get('FirstName');
-            //if (name === 'Alicia') return record;
             var term = record.get('Term');
             if ((currentStudents.getChecked() === true && term === 'Current') ||
                 (pastStudents.getChecked() === true && Ext.Array.contains(terms,term))) {
@@ -664,18 +604,15 @@ Ext.define('OnlineJudges.controller.Admin', {
         });
     },
     onPastJudgesChecked: function (chk, e, eO) {
-        //if (Ext.isDefined(e)) {
-
-            var main = this.getMain(),
-                allJudges = main.down('email checkboxfield[name=allJudges]'),
-                currentJudges = main.down('email checkboxfield[name=activeJudges]');
-            if (currentJudges.getChecked()) {
-                allJudges.check();
-            }
-            var pJO = this.getPastJudgesOptions();
-            var pastJudges = main.down('email checkboxfield[name=pastJudges]');
-            pJO.showBy(pastJudges);
-        //}
+        var main = this.getMain(),
+            allJudges = main.down('email checkboxfield[name=allJudges]'),
+            currentJudges = main.down('email checkboxfield[name=activeJudges]');
+        if (currentJudges.getChecked()) {
+            allJudges.check();
+        }
+        var pJO = this.getPastJudgesOptions();
+        var pastJudges = main.down('email checkboxfield[name=pastJudges]');
+        pJO.showBy(pastJudges);
     },
     onPastStudentsCheck: function (chk, e, eO) {
         var main = this.getMain();
@@ -686,7 +623,6 @@ Ext.define('OnlineJudges.controller.Admin', {
            if (currentStudents.getChecked() === true) {
                 allStudents.check();
             }
-            
         }
         this.getTerms().showBy(pastStudents);
     },
@@ -695,15 +631,12 @@ Ext.define('OnlineJudges.controller.Admin', {
             var main = this.getMain(),
                 allStudents = main.down('email checkboxfield[name=allStudents]');
             allStudents.uncheck();
-           
         }
         var terms = this.getTerms();
         terms.hide();
         var termsList = terms.down('list[name=terms]');
         termsList.deselectAll();
-       
     },
-   
     onActiveStudentsCheck: function(chk, e, eO){
         if (Ext.isDefined(e)) {
             var main = this.getMain(),
@@ -712,9 +645,7 @@ Ext.define('OnlineJudges.controller.Admin', {
             if (pastStudents.getChecked() === true) {
                 allStudents.check();
             }
-
         }
-        
     },
     onActiveStudentsUnchecked: function (chk, e, eO) {
         if (Ext.isDefined(e)) {
@@ -722,58 +653,44 @@ Ext.define('OnlineJudges.controller.Admin', {
                 allStudents = main.down('email checkboxfield[name=allStudents]');
             allStudents.uncheck();
         }
-        
     },
     onActiveJudgesUnchecked: function (chk, e, eO) {
-        //if (Ext.isDefined(e)) {
-            var main = this.getMain(),
-                        allJudgesCk = main.down('email checkboxfield[name=allJudges]'),
-                        judgesOptions = this.getJudgesOptions();
+        var main = this.getMain(),
+                    allJudgesCk = main.down('email checkboxfield[name=allJudges]'),
+                    judgesOptions = this.getJudgesOptions();
                 
-            allJudgesCk.uncheck();
-            var invited = judgesOptions.down('checkboxfield[name=invitedJudges]');
-            invited.uncheck();
-            var pending = judgesOptions.down('checkboxfield[name=pendingJudges]');
-            pending.uncheck();
-            var declined = judgesOptions.down('checkboxfield[name=declinedJudges]');
-            declined.uncheck();
-            judgesOptions.hide();
-
-        //}
-
+        allJudgesCk.uncheck();
+        var invited = judgesOptions.down('checkboxfield[name=invitedJudges]');
+        invited.uncheck();
+        var pending = judgesOptions.down('checkboxfield[name=pendingJudges]');
+        pending.uncheck();
+        var declined = judgesOptions.down('checkboxfield[name=declinedJudges]');
+        declined.uncheck();
+        judgesOptions.hide();
     },
     onPastJudgesUnchecked: function (chk, e, eO) {
-       // if (Ext.isDefined(e)) {
-            var main = this.getMain(),
-                        allJudgesCk = main.down('email checkboxfield[name=allJudges]'),
-                        judgesOptions = this.getPastJudgesOptions();
+        var main = this.getMain(),
+                    allJudgesCk = main.down('email checkboxfield[name=allJudges]'),
+                    judgesOptions = this.getPastJudgesOptions();
 
-            allJudgesCk.uncheck();
-            var invited = judgesOptions.down('checkboxfield[name=invitedJudges]');
-            invited.uncheck();
-            var pending = judgesOptions.down('checkboxfield[name=pendingJudges]');
-            pending.uncheck();
-            var declined = judgesOptions.down('checkboxfield[name=declinedJudges]');
-            declined.uncheck();
-            judgesOptions.hide();
-
-        //}
-
+        allJudgesCk.uncheck();
+        var invited = judgesOptions.down('checkboxfield[name=invitedJudges]');
+        invited.uncheck();
+        var pending = judgesOptions.down('checkboxfield[name=pendingJudges]');
+        pending.uncheck();
+        var declined = judgesOptions.down('checkboxfield[name=declinedJudges]');
+        declined.uncheck();
+        judgesOptions.hide();
     },
-   
     onActiveJudgesChecked: function (chkBox, e, eO) {
-       // if (Ext.isDefined(e)) {
-            var main = this.getMain(),
-                pastJudges = main.down("email checkboxfield[name=pastJudges]"),
-                allJudges = main.down("email checkboxfield[name=allJudges]");
-            if (pastJudges.getChecked() === true) {
-                allJudges.check();
-            }
-            var judgesOptions = this.getJudgesOptions();
-            judgesOptions.showBy(chkBox);
-       // }
-        
-        
+        var main = this.getMain(),
+            pastJudges = main.down("email checkboxfield[name=pastJudges]"),
+            allJudges = main.down("email checkboxfield[name=allJudges]");
+        if (pastJudges.getChecked() === true) {
+            allJudges.check();
+        }
+        var judgesOptions = this.getJudgesOptions();
+        judgesOptions.showBy(chkBox);
     },
     onAllJudgesUnchecked: function (chk, e, eO) {
         if (Ext.isDefined(e)) {
@@ -783,7 +700,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             currentJudges.uncheck();
             pendingJudges.uncheck();
         }
-        
     },
     onAllJudgesChecked: function(chk, e, eO){
         var main = this.getMain(),
@@ -800,7 +716,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             currentStudentsChckBox.setChecked(false);
             pastStudentsChkBox.setChecked(false);
         }
-        
     },
     onAllStudentsChecked: function(){
         var main = this.getMain(),
@@ -808,11 +723,8 @@ Ext.define('OnlineJudges.controller.Admin', {
             pastStudentsChkBox = main.down('email checkboxfield[name=pastStudents]');
         currentStudentsChckBox.setChecked(true);
         pastStudentsChkBox.setChecked(true);
-
     },
-    //===========================================================================================
     //Handlers for the email template view
-    //===========================================================================================
     onTemplateFieldChange: function (select, newValue, oldValue, eOpts) {
         var main = this.getMain(),
            subjectField = main.down('email textfield[name=subject]'),
@@ -836,7 +748,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             var textArea = main.down('emailTemplate textareafield[name=Body]')
             var prevPanel = main.down('emailTemplate panel[name=preview]');
             prevPanel.setHtml(textArea.getValue().replace(/\n/, "<br/>"));
-            //
         }
     },
     onInsertPlaceHolderTap: function(){
@@ -851,9 +762,7 @@ Ext.define('OnlineJudges.controller.Admin', {
         var final = firstHalf.concat(placeHolder).concat(secondHalf);
         textArea.setValue(final);
     },
-    //===========================================================================================
     //Handlers for the email view
-    //===========================================================================================
     onEmailHide: function () {
         var backBtn = this.getBackBtn(),
             logoutBtn = this.getLogoutBtn();
@@ -861,7 +770,6 @@ Ext.define('OnlineJudges.controller.Admin', {
         if (Ext.isDefined(backBtn)) backBtn.hide();
     },
     onEmailActiveItemChange: function (container, value, oldValue, eOpts) {
-        
         var main = this.getMain();
         var navBtn = this.getNavBtn(),
              backBtn = this.getBackBtn(),
@@ -896,22 +804,16 @@ Ext.define('OnlineJudges.controller.Admin', {
                             } else {
                                 str.add({ Email: res.data, FirstName: '', LastName: '' });
                             }
-
                         });
-
                     }
-                   
                 }
             }
-            
-           
         } else {
             navBtn.setText('');
             navBtn.setIconCls('arrow_right');
             backBtn.hide();
         }
     },
-
     onEmailShow: function (email) {
         var main = this.getMain(),
             navBar = main.getNavigationBar(),
@@ -938,10 +840,11 @@ Ext.define('OnlineJudges.controller.Admin', {
         }
        
         navBtn.from = 'Email';
+
+        var store = Ext.getStore('EmailTemplates');
+        store.load();
     },
-    //===========================================================================================
     //Back Button handler used in the email module
-    //===========================================================================================
     onBackBtnTap: function(){
         var main = this.getMain(),
             navBtn = this.getNavBtn();
@@ -954,10 +857,7 @@ Ext.define('OnlineJudges.controller.Admin', {
             invitations.previous();
         }
     },
-
-    //===========================================================================
     //First version stuff
-    //===========================================================================
     onAcceptJudgeGradeTap: function (btn) {
         var me = this,
             main = me.getMain(),
@@ -982,7 +882,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             else Ext.Msg.alert('Error', result.msg, Ext.emptyFn);
         });
     },
-
     onJudgeGradeListTap: function (dataView, index, target, record) {
         var navBtn = this.getNavBtn(),
             main = this.getMain(),
@@ -996,24 +895,25 @@ Ext.define('OnlineJudges.controller.Admin', {
             xtype: 'adminStudentGrade',
             title: name + "'" + (name.indexOf('s', name.length - 1) !== -1 ? '' : 's') + ' Grade'
         }).setRecord(record).student = dataView.student;
-        console.log(main);
     },
-
     onTermsFieldChange: function (select, newValue, oldValue, eOpts) {
+        var mainView = this.getMain(),
+                form = mainView.down('settings'),
+                termselect = mainView.down('[@name=Term]');
 
         Ext.php.Settings.getTerm(function (data) {
-            console.log(data['termInitiated'])
-
             if (oldValue === data['termInitiated']) {
                 Ext.php.Settings.initiateTerm(newValue, function (nextData) {
-                    console.log(nextData)
-                    console.log(newValue)
-                    console.log(oldValue)
+                });
+
+                Ext.php.Settings.load(function (settings) {
+                    termselect.setOptions(settings.terms);
+                    settings.Date = Ext.Date.parse(settings.Date, 'Y-m-d');
+                    form.setValues(settings);
                 });
             }
         });
     },
-
     onResetAppBtnTap: function () {
         var mainView = this.getMain();
 
@@ -1036,7 +936,6 @@ Ext.define('OnlineJudges.controller.Admin', {
             }
         });
     },
-
     onChangePasswordBtnTap: function () {
         var navBtn = this.getNavBtn(),
             mainView = this.getMain();
@@ -1055,7 +954,6 @@ Ext.define('OnlineJudges.controller.Admin', {
         navBtn.from = 'changePwd';
         navBtn.show();
     },
-
     onStudentShowJudgesTap: function (btn) {
         var mainView = this.getMain(),
             navBtn = this.getNavBtn(),
@@ -1083,18 +981,13 @@ Ext.define('OnlineJudges.controller.Admin', {
             }
         });
     },
-
-    //Hiding GradeSaveBtn
     onPeopleTabChange: function (container, value) {
-		
         var navBar = this.getMain().getNavigationBar(),
             navBtn = this.getNavBtn(),
             backBtn = this.getBackBtn();
-         
-            console.log('name: '+ value.getActiveItem().name);
+        
         //Tab invitation
         if (value.getActiveItem().name === 'filterInvitationPanel') {
-            
             navBtn.from = "InvitationsTab";
             navBtn.setIconCls('');
             navBtn.setText('send');
@@ -1111,6 +1004,9 @@ Ext.define('OnlineJudges.controller.Admin', {
 
             GradeSaveBtn = this.getGradeSaveBtn();
             GradeSaveBtn.hide();
+
+            var store = Ext.getStore('Invitations');
+            store.load();
         }
         else if (value.getActiveItem().name === 'listInvitationPanel'){
             AddJudgeBtn = this.getAddJudgeBtn();
@@ -1176,36 +1072,12 @@ Ext.define('OnlineJudges.controller.Admin', {
             navBtn.setIconCls('add');
             navBtn.show();
 
-            // AddJudgeBtn = this.getAddJudgeBtn();
-            // AddJudgeBtn.hide();
-
             GradeSaveBtn = this.getGradeSaveBtn();
             GradeSaveBtn.hide();
 
             store = Ext.getStore('Judges');
             store.load();
         }
-        //invitations tab
-        else if (title === 'Invitations') {
-            //Contains Panels, see upper
-            
-            /*
-            if (value.getActiveItem().name === 'filterInvitationPanel'){
-                // NEW: Adding Button Send  
-                navBtn.from = "InvitationsTab";
-                navBtn.setIconCls('');
-                navBtn.setText("Send");
-                navBtn.show();
-
-                AddJudgeBtn = this.getAddJudgeBtn();
-                AddJudgeBtn.show();
-
-                GradeSaveBtn = this.getGradeSaveBtn();
-                GradeSaveBtn.hide();
-            }
-            */
-        }
-
         else if (title === 'Grades'){            
             navBtn.from = "pendingGradesTab";
             navBtn.setText('');
@@ -1220,21 +1092,15 @@ Ext.define('OnlineJudges.controller.Admin', {
 
             store = Ext.getStore('PendingGrades');
             store.load();
-
         }
     }
     },
 onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
-        
         var main = this.getMain();
         var navBtn = this.getNavBtn(),
-             backBtn = this.getBackBtn(),
-             AddJudgeBtn = this.getAddJudgeBtn();
+            backBtn = this.getBackBtn(),
+            AddJudgeBtn = this.getAddJudgeBtn();
            
-             
-             console.log('Value: '+value.name);
-             
-             
         if (value.name === 'sendInvitationPanel') {
             navBtn.setText('Send');
             navBtn.setIconCls('');
@@ -1258,7 +1124,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             navBtn.show();
             var extraEmails = main.down('email textareafield[name=extraEmails]');
             this.setJudgesStoreFilter();
-            //this.setStudentsStoreFilter();
             if (extraEmails !== null) {
                 var str = Ext.getStore('ExtraEmails');
                 str.removeAll();
@@ -1275,14 +1140,10 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                             } else {
                                 str.add({ Email: res.data, FirstName: '', LastName: '' });
                             }
-
                         });
-
                     }
-                   
                 }
-            }           
-           
+            }       
         } else {
             backBtn.hide();
             navBtn.setIconCls('');
@@ -1295,10 +1156,7 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             GradeSaveBtn.hide();
             
             if (value.name === 'filterInvitationPanel')
-            {
-            	navBtn.hide();
-            }
-            
+                navBtn.hide();
         }
     },
     onStudentsListTap: function (dataView, index, target, record) {
@@ -1312,12 +1170,10 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         navBtn.setIconCls('');
 
         this.getLogoutBtn().hide();
-        alert('coucou')
         mainView.push(Ext.create('widget.adminStudentView', {
             title: record.get('FirstName') + " " + record.get('LastName')
         }).setRecord(record));
     },
-
     onHomeTabShow: function () {
         var main = this.getMain(),
             navBtn = this.getNavBtn(),
@@ -1332,11 +1188,11 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         navBar.setTitle("Home");
         navBar.backButtonStack[navBar.backButtonStack.length - 1] = "Home";
 
+        // WinterMJA Change
         Ext.php.Settings.getSummary(function (data) {
             form.setValues(data);
         });
     },
-
     onNavBtnTap: function () {
         var me = this,
             mainView = me.getMain();
@@ -1347,7 +1203,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 mainView.down('adminHome').setValues(data);
             });
         }
-
         else if (button.from === 'questionsView') {
 
             this.getLogoutBtn().hide();
@@ -1361,7 +1216,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             button.setIconCls('');
             button.from = 'newQuestion';
         }
-
         else if (button.from === 'newQuestion') {
             var rec = mainView.getActiveItem().getValues();
             if (!Ext.isEmpty(rec.Text)) {
@@ -1385,14 +1239,8 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 });
             }
         }
-
         //send invitation
         else if (button.from === 'judgesTab') {
-                //NEW: Adding Judge Add Button
-                // AddJudgeBtn.from = "addJudgebtn";
-                // AddJudgeBtn = this.getAddJudgeBtn();
-                // AddJudgeBtn.show();
-
             Ext.php.Settings.load(function (settings) {
                 if (Ext.isEmpty(settings.Date) ||
                     Ext.isEmpty(settings.Time) ||
@@ -1412,14 +1260,11 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     title: 'Send Invitation'
                 });
 
-                console.log("herro")
-
                 button.setText("Send");
                 button.setIconCls('');
                 button.from = 'sendInvitation';
             });
         }
-
         //NEW: implementing sending function on invitations tab
         else if (button.from === 'InvitationsTab') {
             var invitations = me.getMain().down("invitations");
@@ -1439,14 +1284,12 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             } else {
                 invitations.next();
             }
-                
         }
-
-
         else if (button.from === 'studentsTab') {
             Ext.Msg.confirm('Load Students', 'Do you want to import students from the Sr Project Website?', function (btn) {
                 if (btn === 'yes') {
-                    Ext.php.Students.load(function () {
+                    // WinterMJA Change
+                    Ext.php.Students.load(function (data) {
                         Ext.getStore('Students').load();
                     });
                 }
@@ -1461,8 +1304,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     var msg = result.success ? "Invitation successfully sent" : "Failed to send invitation",
                         store = Ext.getStore('Invitations');
                         // retrieve all objects to send
-
-                        console.log(store);
                     
                     if (result.success && store.isLoaded()) store.load();
 
@@ -1472,7 +1313,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 });
             }
         }
-
         else if (button.from === 'settingsTab') {
             var form = mainView.down('settings'),
                 settings = form.getValues();
@@ -1484,6 +1324,7 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 message: 'Saving...'
             });
 
+            // WinterMJA Changes
             Ext.php.Settings.save(settings, function (result) {
                 form.setMasked(false);
                 if (result === false) Ext.Msg.alert('Settings', 'Error loading map image', Ext.emptyFn);
@@ -1507,14 +1348,12 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             });
 
             Ext.php.Students.setLocation(id, location, function (result) {
-
                 if (result === true) rec3.set('Location', location);
                 else form.reset();
 
                 form.setMasked(false);
             });
         }
-
         else if (button.from === 'changePwd') {
             var form = mainView.down('adminChangePwd'),
                 values = form.getValues();
@@ -1535,7 +1374,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     me.onHomeBack();
                 }
                 else {
-                    //form.reset();
                     Ext.Msg.alert('Error', result, Ext.emptyFn);
                 }
             });
@@ -1548,7 +1386,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 if (send === true) {
                     var to = r.get('Email');
                     to = 'anorc002@fiu.edu;'
-                    //to = 'malbu012@fiu.edu;'
                     var fname = r.get('FirstName');
                     if (!Ext.isDefined(fname)) fname = '';
 
@@ -1569,8 +1406,7 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                             else errorEmails++;
                         });
             sentEmail++;
-                    Ext.php.Email.sendEmail('jjord006@fiu.edu', subject, bodyReady, from, Ext.emptyFN);           
-
+                    Ext.php.Email.sendEmail('jjord006@fiu.edu', subject, bodyReady, from, Ext.emptyFN);     
                 }
             };
             
@@ -1592,7 +1428,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             } else {
                 email.next();
             }
-       
         } else if (button.from === 'emailTemplateSave') {
             var main = this.getMain();
             var title = main.down('emailTemplate textfield[name=TemplateTitle]');
@@ -1607,13 +1442,11 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                                 mainView.pop();
                                 me.onHomeBack();
                                 Ext.getStore('EmailTemplates').load();
-
                             });
                     } else {
                         Ext.Msg.alert("Error", result.msg, Ext.emptyFN);
                     }             
                 });
-            
         } else if (button.from === 'emailTemplateUpdate') {
             var main = this.getMain();
             var template = main.down('emailTemplate');
@@ -1645,13 +1478,8 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                         Ext.Msg.alert('Error', result.msg, Ext.emptyFN);
                     }
                 });
-
-           
         }
     },
-
-
-    //NEW: on tap Judge add button
     onAddJudgeTap: function(){
         var button = this.getNavBtn();
 
@@ -1669,11 +1497,7 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         }
         else if (button.from == "sendInvitation")
         {
-
             var store = Ext.getStore("AddJudgesList");
-
-            // var util = this.getMain().getView('widget.adminSendInvitation');
-            // console.log("VIEW: " + util);
 
             //Create Date Object
             var now = new Date(),
@@ -1681,37 +1505,18 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                  value = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
             // Get the data store 'AddJudgesList'
             var store = Ext.getStore('AddJudgesList');
-            console.log("SIZE:" + store.getCount());
             // Add the Local Time value into the data store
             store.add({txt: value});
-            //store.add("Hello");
             console.log("VALUE " + JSON.stringify(store.getAt(store.getCount()-1).getData()));
-
-            // console.log(info)
-            // console.log("shit")
-            // info.load();
-            // console.log(info)
-
-            //  mainView = this.getMain(),
-            // console.log("cracccaaaa")
-            // mainView.push(Ext.create('widget.adminSendInvitation', {
-            //       xtype: 'adminSendInvitation'
-            // })).setRecord('invitations');
         }
     },
-
     onPeopleTabHide: function(tabpanel){
-            //AddJudgeBtn = this.getaddJudgeBtn();
-           // AddJudgeBtn.hide();
-            
             GradeSaveBtn = this.getGradeSaveBtn();
             GradeSaveBtn.hide();
-
     },
     onPeopleTabShow: function (tabpanel) {
         this.onPeopleTabChange(0, tabpanel.getActiveItem());
     },
-
     onSettingsTabShow: function () {
         var navBtn = this.getNavBtn(),
             mainView = this.getMain(),
@@ -1740,7 +1545,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
 			form.setMasked(false);
 		});
     },
-
     onQuestionsTabShow: function () {
         var navBtn = this.getNavBtn(),
             mainView = this.getMain(),
@@ -1764,11 +1568,8 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         navBtn.from = 'questionsView';
         navBtn.show();
 
-        //Ext.Msg.alert("" + navBtn.from);
-
-        if (!store.isLoaded()) store.load();
+        store.load();
     },
-
     onQuestionsListSwipe: function (dataview, index, target, record, e) {
         if (e.direction !== "right") return;
 
@@ -1804,7 +1605,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             touchstart: removeDeleteButton
         });
     },
-
     onHomeBack: function () {
         var navBtn = this.getNavBtn(),
             navBar = this.getMain().getNavigationBar();
@@ -1816,19 +1616,16 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             navBtn.setText("");
             navBtn.setIconCls('add');
         }
-
         else if (navBtn.from === 'sendInvitation') {
             navBtn.from = 'judgesTab';
             navBtn.setText("");
             navBtn.setIconCls('add');
         }
-
         else if (navBtn.from === 'studentView') {
             navBtn.from = 'studentsTab';
             navBtn.setText("Load");
             navBtn.setIconCls('');
         }
-
         else if (navBtn.from === 'studentJudges') {
             var form = this.getMain().down('adminStudentView');
 
@@ -1838,18 +1635,15 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             navBtn.setIconCls('');
             navBtn.show();
         }
-
         else if (navBtn.from === 'changePwd') {
             navBtn.from = "settingsTab";
             navBtn.setText("Save");
             navBtn.setIconCls('');
             navBtn.show();
         }
-
         else if (navBtn.from === 'studentGrade') {
             navBtn.from = 'studentJudges';
         }
-
         else if (navBtn.from === 'emailTemplateSave' || navBtn.from === 'emailTemplateUpdate') {
             navBar.setTitle('Email');
             navBtn.setText('Send');
@@ -1858,35 +1652,20 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             this.getLogoutBtn().hide();
             navBtn.from = 'Email'
         }
-
         else if (navBtn.from === 'questionsView') {
             navBtn.from = 'settingsTab'
-            //Ext.Msg.alert("" + navBtn.from);
             navBtn.setText("Save");
             navBtn.setIconCls('');
             navBar.setTitle("Settings");
             navBtn.show();
         }
-
         else navBtn.hide();
     },
-
-    //==============================================================
-    //Livestats stuff
-    //==============================================================
-    // onLiveStatInitilize:function() {
-    //     alert('hello moto');
-    //     var main = this.getMain(),
-    //         spinner = main.down('settings spinnerfield[name=RefreshRate]');
-    //     //var allStudents = { id: 999, FirstName: 'ALL', LastName: 'ALL', Grade: nu
-
     refreshFunc: function(){
             var main = this.getMain(),
              spinner = main.down('settings spinnerfield[name=RefreshRate]');
 
-
             var time = spinner.getValue() * 1000;
-            // taskLiveStatsTimer.delay(time);
 
             clearInterval(taskLiveStatsTimer);
             if(time != 0){
@@ -1898,12 +1677,10 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 }, time);
             }
         },
-
     onLivestatsHide: function() {
         var LivestatsBtn = this.getLivestatsBtn();
             LivestatsBtn.hide();
     },
-
     onlivestatsGraphBtnTap: function() {
         var navBtn = this.getNavBtn(),
         mainView = this.getMain(),
@@ -1917,24 +1694,22 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             xtype: 'livestatsGraph'
         });
     },
-
     onLivestatsListShow: function() {   
         var navBtn = this.getNavBtn(),
             LivestatsBtn = this.getLivestatsBtn(),
             mainView = this.getMain(),
             navBar = mainView.getNavigationBar(),
             form = mainView.down('livestats');
-            //store = Ext.getStore('Livestats');
-            //store.load();
 
         var store = Ext.getStore('Livestats');
+        store.removeAll();
         var method = Ext.direct.Manager.parseMethod('Ext.php.Livestats.getAll');
         store.getProxy().setDirectFn(method);
+        store.load();
         store.setSorters('id');
 
         navBar.setTitle("Stats");
         navBar.backButtonStack[navBar.backButtonStack.length-1] = "Livestats";
-        //navBtn.backButtonStack[navBar.backButtonStack.length-1] = "Livestats";
         navBtn.from = 'livestatsTab';
         navBtn.hide();
 
@@ -1944,7 +1719,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     sheight = (window.innerHeight > 0) ? window.innerHeight : screen.height,
                     popup = new Ext.Panel({
                         modal: true,
-                        //floating: true,
                         top: 20,
                         right: 5,
                         items: []
@@ -1961,7 +1735,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                             stre.getProxy().setDirectFn(method);
                             stre.load();
                             LivestatsBtn.setText("Students");
-                        
                     }
                 }
                 selProjects = {
@@ -1976,14 +1749,12 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                             stre.getProxy().setDirectFn(method);
                             stre.load();
                             LivestatsBtn.setText("Projects");
-                        
                     }
                 }
                 popup.add(selStudents);
                 popup.add(selProjects);
                 popup.show();
             }
-
         });
         LivestatsBtn.show();
 
@@ -1994,12 +1765,8 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         form.setMasked(false);
 
         this.getApplication().getController('Admin').refreshFunc();
-    
     },
-
-    //================================================================
     //Roles stuff
-    //================================================================
     onAdminLoadRoles: function () {
         var me = this,
             mainView = this.getMain(),
@@ -2009,7 +1776,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             rolesBtn = this.getRolesBtn();
 
         me.onHomeTabShow();
-
 
         rolesBtn.setListeners({
             tap: function () {
@@ -2076,7 +1842,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             }
         });
     },
-
     onStudentRolesBtnTap: function(button) {
         var me = this,
             email = this.getStudentEmail().getValue(),
@@ -2155,7 +1920,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     }
                 ]
             });
-
         Ext.php.LoginMain.getOtherRoles(email, function (res) {
             var roles = res.Roles.split(";");
 
@@ -2173,7 +1937,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         });
         popup.show();
     },
-
     onMyRolesBtnTap: function() {
         var me = this,
             store = Ext.getStore('LoginInstance'),
@@ -2252,7 +2015,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     }
                 ]
             });
-
         Ext.php.LoginMain.getOtherRoles(email, function (res) {
             var roles = res.Roles.split(";");
 
@@ -2268,10 +2030,8 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 }
             }
         });
-
         popup.show();
     },
-
     onJudgesListTap: function (dataView, index, target, record) {
         var me = this,
             email = record.get('Email'),
@@ -2355,7 +2115,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                     }
                 ]
             });
-
         Ext.php.LoginMain.getOtherRoles(email, function (res) {
             var roles = res.Roles.split(";");
 
@@ -2373,7 +2132,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
         });
         popup.show();
     },
-
     onMyDefaultRoleBtnTap: function () {
         var me = this,
             store = Ext.getStore('LoginInstance'),
@@ -2427,7 +2185,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 }
             ]
         });
-
         Ext.php.LoginMain.getDefaultRole(email, function (res) {
             var defaultRole = res.DefaultRole;
 
@@ -2441,19 +2198,14 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
                 popup.down('radiofield[label=Student]').check();
             }
         });
-
         popup.show();
     },
-
-    //======================================================================
     //Role Helper methods
-    //======================================================================
     loadMainView: function (view, options) {
         Ext.Viewport.removeAll().add(Ext.create('widget.' + view, Ext.apply({
             title: 'CIS 4911 Online Judges'
         }, options || {})));
     },
-
     confirmRemoveRole: function (popup, user, role) {
         Ext.Msg.confirm('Remove Role', 'Are you sure you want to remove this role?', function (btn) {
             if (btn === 'yes') {
@@ -2469,7 +2221,6 @@ onInvitationsActiveItemChange: function (container, value, oldValue, eOpts) {
             }
         });
     },
-
     confirmAddRole: function (popup, user, role, from) {
         Ext.Msg.confirm('Add Role', 'Are you sure you want to add this role?', function (btn) {
             if (btn === 'yes') {

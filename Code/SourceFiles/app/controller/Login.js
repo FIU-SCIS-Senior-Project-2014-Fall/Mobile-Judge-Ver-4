@@ -102,11 +102,9 @@ Ext.define('OnlineJudges.controller.Login', {
                         }
                     });
                 }
-
             });
         }
     },
-
     onLogoutStudentsTap: function() {
         var token = window.localStorage.getItem('token');
         window.localStorage.removeItem('token');
@@ -114,13 +112,11 @@ Ext.define('OnlineJudges.controller.Login', {
         Ext.Viewport.removeAll().add(Ext.create('widget.login'));
         Ext.php.Students.logout(token);
     },
-
     onLogoutJudgesTap: function() {
         OnlineJudges.map = null;
         Ext.Viewport.down('navigationview').getLayout().setAnimation(false);
         Ext.Viewport.removeAll().add(Ext.create('widget.login'));
     },
-
     onStudentRolesBtnTap: function () {
         var me = this,
             store = Ext.getStore('LoginInstance'),

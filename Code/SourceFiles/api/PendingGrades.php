@@ -11,8 +11,8 @@ class PendingGrades {
                     FROM JudgeStudentGrade as j
                     inner join Users as s on s.JudgeId = j.JudgeId
                     inner join Users as e on e.StudentId = j.StudentId
-					join term as t on t.termInitiated = s.termInitiated
-                    WHERE Grade is Not Null and t.ShowTerm = 'yes'");
+					join term as t on t.termInitiated = s.termInitiated and t.termInitiated = e.termInitiated and e.termInitiated = s.termInitiated and t.ShowTerm = 'yes'
+                    WHERE Grade is Not Null");
         $res = $db->getResult();
         //if (array_key_exists('JudgeId', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);

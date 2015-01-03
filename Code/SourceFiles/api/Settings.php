@@ -49,11 +49,16 @@ class Settings {
 
     public function getSummary() {
         $db = new Database();
-        $db->sql('SELECT count(*) as students, COALESCE(SUM(case when Grade is null then 1 else 0 end),0) as toGrade,
-                         (select COALESCE(sum(case when replied is null then 1 else 0 end),0) from JudgeInvitations) as pending,
-                         (select COALESCE(sum(case when response = 1 then 1 else 0 end),0) from JudgeInvitations) as accepted,
-                         (select COALESCE(sum(case when response = 0 then 1 else 0 end),0) from JudgeInvitations) as declined
-                  FROM Students');
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+        $db->sql("SELECT count(*) as students, COALESCE(SUM(case when Grade is null then 1 else 0 end),0) as toGrade,
+                         (select COALESCE(sum(case when replied is null then 1 else 0 end),0) from JudgeInvitations WHERE termInitiated = '".$term."') as pending,
+                         (select COALESCE(sum(case when response = 1 then 1 else 0 end),0) from JudgeInvitations WHERE termInitiated = '".$term."') as accepted,
+                         (select COALESCE(sum(case when response = 0 then 1 else 0 end),0) from JudgeInvitations WHERE termInitiated = '".$term."') as declined
+                  FROM Students WHERE termInitiated = '".$term."'");
         $summary = $db->getResult();
         return $summary;
     }
@@ -71,9 +76,8 @@ class Settings {
 				file_put_contents(dirname(__FILE__).'/../resources/'.basename($settings->MapImage), $mapimage_data);
         	}
         }
-        
 
-        $db->select('Settings','Term');
+        $db->select('Settings','Term',null,"Term = '".$settings->Term."'");
         $term = $db->getResult();
 
         $db->update('Settings', array(

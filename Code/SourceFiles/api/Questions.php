@@ -13,7 +13,15 @@ class Questions {
 
     public function add($question) {
         $db = new Database();
-        $success = $db->insert('Questions', array('Text'=>$question));
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+        $success = $db->insert('Questions', array(
+			'Text'=>$question, 
+			'termInitiated' => ''.$term.''));
+
         $res = $db->getResult();
         if (!$success) return array('success'=>false, 'msg'=>$res);
         $data = array('id'=>intval($res[0]), 'Text'=>$question);

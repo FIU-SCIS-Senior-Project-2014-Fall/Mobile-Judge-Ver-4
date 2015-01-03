@@ -37,7 +37,12 @@ class Email {
 	} 
 	public function getEmailTemplates(){
 		$db = new Database();
-		$db->sql('select * from onlinejudges.emailTemplates');
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+		$db->sql("select * from onlinejudges.emailTemplates where termInitiated = '".$term."'");
 		$res = $db->getResult();
 		if(array_key_exists('TemplateID', $res)) $res = array($res);
 		return array('total'=>count($res), 'data'=>$res);
@@ -45,10 +50,16 @@ class Email {
 
 	public function addTemplate($templateTitle, $subject, $body){
 		$db = new Database();
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
 		$success = $db->insert('emailTemplates', 
 			array('TemplateTitle'=>$templateTitle,
 				'Subject'=>$subject,
-				'Body'=>$body));
+				'Body'=>$body,
+				'termInitiated'=>$term));
 		$res = $db->getResult();
 		if(!$success) return array('success'=>false,'msg'=>$res);
 		$data = array('id'=>intval($res[0]), 
@@ -73,7 +84,12 @@ class Email {
 	}
 	public function getContact($email){
 		$db = new Database();
-		$db->sql('select FirstName, LastName, Email from Users where Email = \''.$email.'\'' );
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+		$db->sql("select FirstName, LastName, Email from Users where Email = '".$email."' and termInitiated = '".$term."'" );
 		$res = $db->getResult();
 		$total = 0;
 		if(array_key_exists('LastName', $res)){ 

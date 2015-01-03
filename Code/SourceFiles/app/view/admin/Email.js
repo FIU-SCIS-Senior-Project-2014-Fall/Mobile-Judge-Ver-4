@@ -16,8 +16,6 @@ Ext.define('OnlineJudges.view.admin.Email', {
                 name: 'filterPanel',
                 layout: 'auto',
                 scrollable: true,
-                //margin: '5 5 5 5',
-                
 
                 items: [{
                     xtype: 'fieldset',
@@ -27,8 +25,6 @@ Ext.define('OnlineJudges.view.admin.Email', {
                         name: 'allStudents',
                         label: 'All',
                         checked: false
-                        //labelWrap: true
-
                     },{
                         xtype: 'checkboxfield',
                         name: 'activeStudents',
@@ -114,8 +110,6 @@ Ext.define('OnlineJudges.view.admin.Email', {
                             }
                         }
                     }
-                    
-
                 }, {
                     xtype: 'label',
                     html: '<h4><b>Judges</b></h4>',
@@ -248,14 +242,11 @@ Ext.define('OnlineJudges.view.admin.Email', {
                                 styleHtmlContent: true,
                                 minHeight: '300px'
                             }
-
                         ]
                     }
                 ]
             }
-
         ]
-
     },
     initialize: function () {
         var store = Ext.getStore('StudentsContacts');
@@ -274,7 +265,5 @@ Ext.define('OnlineJudges.view.admin.Email', {
 
         var tplStr = Ext.getStore('EmailTemplates');
         if(!tplStr.isLoaded()) tplStr.load()
-        
     }
-
 });

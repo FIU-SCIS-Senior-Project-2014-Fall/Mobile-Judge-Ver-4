@@ -31,7 +31,7 @@ Ext.define('OnlineJudges.view.admin.Livestats', {
             flex: 1,
             listeners: {
                             itemtap: function(item, num, ev, record){
-                                var store = Ext.getStore('LivestatsGraph');
+                                var store = Ext.getStore('Livestats');
                                 var msg = " ";
                                 if(record.get('LastName') != null)
                                 {

@@ -32,14 +32,7 @@ Ext.define('OnlineJudges.view.admin.Invitations', {
                                '<tpl else>PENDING...</tpl>',
                              '</div>',
                          '</div>',
-                         // '<div class="x-component-outer">',
-                         //     '<div class="x-unsized x-field-input" style="border:0;background:none;">',
-                         //         '<input type="checkbox" <tpl if=\'InvitationSelected === true\'>checked="checked"</tpl> class="x-input-el x-input-checkbox">',
-                         //         '<div class="x-field-mask"></div>',
-                         //     '</div>',
-                         // '</div>',
                      '</div>'
-
                     ],
                     flex: 3,
                     ui: 'round',
@@ -54,7 +47,6 @@ Ext.define('OnlineJudges.view.admin.Invitations', {
                                     inviteStore[record.data.Email]= null;
                                     record.set('InvitationSelected', false);
                                  } else {
-                                    //console.log(record);
                                     inviteStore[record.data.Email]= (record.data);
                                      record.set('InvitationSelected', true);
                                 }
@@ -66,45 +58,7 @@ Ext.define('OnlineJudges.view.admin.Invitations', {
                 name: 'listInvitationPanel',
                 layout: 'vbox',
                 margin: '5 5 5 5',
-                items: [/*{
-                    xtype: 'label',
-                    html: '<h4><b>Students</b></h4>',
-                    styleHtmlContent: true,
-                    flex: 1
-                }, {
-                    xtype: 'list',
-                    disableSelection: true,
-                    itemTpl: [
-                               '<div class="x-container x-field-checkbox x-field x-label-align-left x-field-labeled" style="background:none">',
-                                   '<div class="x-form-label" style="background:none;padding: 0">',
-                                       '<div>{FirstName} {LastName}</div>',
-                                       '<div style="font-size:12px">Email: {Email}</div>',
-                                   '</div>',
-                                   '<div class="x-component-outer">',
-                                       '<div class="x-unsized x-field-input" style="border:0;background:none;">',
-                                           '<input type="checkbox" <tpl if=\'Send === true\'>checked="checked"</tpl> class="x-input-el x-input-checkbox">',
-                                           '<div class="x-field-mask"></div>',
-                                       '</div>',
-                                   '</div>',
-                               '</div>'
-                    ],
-                    ui:'round',
-                    flex: 3,
-                    emptyText: '<a style="font-size:12px">The are no students to display<a>',
-                    store: 'StudentsContacts',
-                    listeners: {
-                        itemtap: function (item, num, ev, record) {
-                            var flag = record.get('Send');
-                            if (flag === true) {
-                                record.set('Send', false);
-                            } else {
-                                record.set('Send', true);
-                            }
-                        }
-                    }
-                    
-
-                },*/ {
+                items: [{
                     xtype: 'label',
                     html: '<h4><b>Judges</b></h4>',
                     styleHtmlContent: true,
@@ -236,14 +190,11 @@ Ext.define('OnlineJudges.view.admin.Invitations', {
                                 styleHtmlContent: true,
                                 minHeight: '300px'
                             }
-
                         ]
                     }
                 ]
             }
-
         ]
-
     },
     initialize: function () {
         var store = Ext.getStore('Invitations');
@@ -261,7 +212,5 @@ Ext.define('OnlineJudges.view.admin.Invitations', {
 
         var tplStr = Ext.getStore('EmailTemplates');
         if(!tplStr.isLoaded()) tplStr.load()
-        
     }
-
 });

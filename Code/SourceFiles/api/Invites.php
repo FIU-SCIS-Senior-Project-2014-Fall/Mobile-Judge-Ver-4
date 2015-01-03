@@ -11,7 +11,7 @@ class Invites {
 		"term on JudgeInvitations.termInitiated = term.termInitiated", 
 		"term.ShowTerm = 'yes'");
         $res = $db->getResult();
-        if (array_key_exists('id', $res)) $res=array($res);
+        //if (array_key_exists('id', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);
     }
 
@@ -50,8 +50,12 @@ class Invites {
 
         $id = $isNew ? trim($db->getGUID(),"{}") : $invite['id'];
 
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
         if (!$isNew) $db->delete('JudgeInvitations', "id='".$id."'");
-        $db->insert('JudgeInvitations', array('id'=>$id, 'Email'=>$rec->Email, 'FirstName'=>$rec->FirstName, 'LastName'=>$rec->LastName ));
+        $db->insert('JudgeInvitations', array('id'=>$id, 'Email'=>$rec->Email, 'FirstName'=>$rec->FirstName, 'LastName'=>$rec->LastName, 'termInitiated'=>$term ));
 
         $db->select('JudgeInvitations','JudgeInvitations.*,Settings.Subject','Settings ON 1=1',"id = '".$id."'");
         $invite = null;
