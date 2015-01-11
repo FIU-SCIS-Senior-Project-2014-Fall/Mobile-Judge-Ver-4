@@ -427,7 +427,7 @@ Ext.define('OnlineJudges.controller.Admin', {
         str.filterBy(function (record) {
             var terms = record.get('Term').split(',');
             var resp = record.get('Response');
-            var responses = resp.split(',');
+            var responses = resp.split(",");
 
             if (activeJudges.getChecked() === true) {
                 //Check if it is pending
@@ -607,6 +607,8 @@ Ext.define('OnlineJudges.controller.Admin', {
         var main = this.getMain(),
             allJudges = main.down('email checkboxfield[name=allJudges]'),
             currentJudges = main.down('email checkboxfield[name=activeJudges]');
+        var termsStore = Ext.getStore('Terms');
+        termsStore.load();
         if (currentJudges.getChecked()) {
             allJudges.check();
         }
@@ -616,6 +618,8 @@ Ext.define('OnlineJudges.controller.Admin', {
     },
     onPastStudentsCheck: function (chk, e, eO) {
         var main = this.getMain();
+        var termsStore = Ext.getStore('Terms');
+        termsStore.load();
         var currentStudents = main.down('email checkboxfield[name=activeStudents]'),
             pastStudents = main.down('email checkboxfield[name=pastStudents]')
         allStudents = main.down('email checkboxfield[name=allStudents]');
