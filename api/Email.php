@@ -5,32 +5,47 @@ require_once 'Database.php';
 class Email {
 	public function getSemesters(){
 		$db = new Database();
-		$db->sql('select distinct Term as id from History');
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+		$db->sql("select distinct Term as id from History where termInitiated = '".$term."'");
 		$res = $db->getResult();
 		if (array_key_exists('id', $res)) $res=array($res);
         return array('total'=>count($res), 'data'=>$res);
 	}
 	public function getStudentsContacts(){
 		$db = new Database();
-		$db->sql('select h.FirstName, h.LastName, h.Email, h.Term from History h where h.Grade is not null
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+		$db->sql("select h.FirstName, h.LastName, h.Email, h.Term from History h where h.Grade is not null and h.termInitiated = '".$term."'
 					union 
-					select u.FirstName, u.LastName, u.Email, \'Current\' as Term from Students s
-					inner join Users u on u.StudentId = s.id');
+					select u.FirstName, u.LastName, u.Email, 'Current' as Term from Students s
+					inner join Users u on u.StudentId = s.id where u.termInitiated = '".$term."' and u.termInitiated = s.termInitiated");
 		$res = $db->getResult();
 		if(array_key_exists('Email',$res)) $res=array($res);
 		return array('total'=>count($res), 'data'=>$res);
 	}
 	public function getJudgesContacts(){
 		$db = new Database();
-		$db->sql('select sq.FirstName, sq.LastName, sq.Email, group_concat(sq.Term) as Term, group_concat(sq.Response) as Response
-						from (select h.FirstName, h.LastName, h.Email, h.Term,  ifnull(h.Response,-1) as Response from History h where h.Grade is null
+
+		$db->sql("select termInitiated from term where ShowTerm = 'yes'");
+		$result = $db->getResult();
+		$term = $result['termInitiated'];
+
+		$db->sql("select sq.FirstName, sq.LastName, sq.Email, group_concat(sq.Term) as Term, group_concat(sq.Response) as Response
+						from (select h.FirstName, h.LastName, h.Email, h.Term,  ifnull(h.Response,-1) as Response from History h where h.Grade is null and h.termInitiated = '".$term."'
 										union 
-										select u.FirstName, u.LastName, u.Email, \'Current\' as Term, 1 as Response from Judges j
-										inner join Users u on u.JudgeId = j.id
+										select u.FirstName, u.LastName, u.Email, 'Current' as Term, 1 as Response from Judges j
+										inner join Users u on u.JudgeId = j.id where u.termInitiated = '".$term."'
 										union
-										select ji.FirstName, ji.LastName, ji.Email, \'Current\' as Term, ifnull(ji.Response,-1) as Response  from JudgeInvitations ji
-										where ji.Response is null) as sq 
-					group by sq.FirstName, sq.LastName, sq.Email'); 
+										select ji.FirstName, ji.LastName, ji.Email, 'Current' as Term, ifnull(ji.Response,-1) as Response  from JudgeInvitations ji
+										where ji.termInitiated = '".$term."') as sq 
+					group by sq.FirstName, sq.LastName, sq.Email"); 
 		$res = $db->getResult();
 		if(array_key_exists('Email', $res)) $res=array($res);
 		return array('total'=>count($res), 'data'=>$res);
