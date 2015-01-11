@@ -250,7 +250,7 @@ Ext.define('OnlineJudges.view.admin.Email', {
     },
     initialize: function () {
         var store = Ext.getStore('StudentsContacts');
-        if (!store.isLoaded()) store.load();
+        store.load();
         store.filter('Term','NOT DISPLAY')
 
         var judgesStore = Ext.getStore('JudgesContacts');
@@ -258,7 +258,7 @@ Ext.define('OnlineJudges.view.admin.Email', {
         judgesStore.filter('Term', 'NOT DISPLAY');
 
         var termsStore = Ext.getStore('Terms');
-        if (!termsStore.isLoaded()) termsStore.load();
+        termsStore.load();
 
         var extraStr = Ext.getStore('ExtraEmails');
         if (!extraStr.isLoaded()) extraStr.load();
